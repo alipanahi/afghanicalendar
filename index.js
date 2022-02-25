@@ -8,6 +8,7 @@ const daysDiv = document.getElementById('days')
 const nextBtn = document.getElementById('nextMonth')
 const previousBtn = document.getElementById('previousMonth')
 
+document.addEventListener('click',loadNextMonth)
 let unixdate = Date.now()
 let today = new Date(unixdate)
 let todayDate = today.toLocaleDateString()
@@ -151,4 +152,7 @@ function dateToMiladi(y,m,d){
 }
 function div(a, b) {
     return Math.floor(a / b);
+ }
+ function loadNextMonth(){
+     alert('herer')
  }

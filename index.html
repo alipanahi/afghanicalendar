@@ -8,9 +8,9 @@
     </head>
     <body>
         <section>
-            <div>
+            <header>
                 
-                <h1><span class="next" id="nextMonth"><</span><span id="shamsiDate"></span><span class="previous" id="previousMonth">></span></h1>
+                <h1><span id="shamsiDate"></span></h1>
                 <h2 class="miladi"><span id="miladiDate"></span></h2>
                 <div class="week-days" dir="rtl">
                     <p>ش</p>
@@ -24,6 +24,10 @@
                 <div id="days" dir="rtl">
                      
                 </div>
+            </header>
+            <div class="actions">
+                <button id="carousel-button-prev" aria-label="Previous Slidex"><</button>
+                <button id="carousel-button-next" aria-label="Next Slide">></button>
             </div>
         </section>
         <script src="index.js"></script>
