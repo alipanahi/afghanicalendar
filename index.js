@@ -7,8 +7,15 @@ const miladiDateSpan = document.getElementById('miladiDate')
 const daysDiv = document.getElementById('days')
 const nextBtn = document.getElementById('nextMonth')
 const previousBtn = document.getElementById('previousMonth')
+let selectedMonth = 0
+let selectedYear = 0
+let currentSMonth = 0
+let currentSDay = 0
+let isCurrentMoth = true
 
-document.addEventListener('click',loadNextMonth)
+nextBtn.addEventListener('click',loadNextMonth)
+previousBtn.addEventListener('click',loadPreviousMonth)
+//according to today's date, render the current month
 let unixdate = Date.now()
 let today = new Date(unixdate)
 let todayDate = today.toLocaleDateString()
@@ -17,82 +24,97 @@ let miladi_m = todayArray[0]
 let miladi_d = todayArray[1]
 let miladi_y = todayArray[2]
 
-let mY = miladi_y-1600
-let mM = miladi_m-1
-let mD = miladi_d-1
-let miladi_day_no = 365*mY+div(mY+3,4)-div(mY+99,100)+div(mY+399,400);
+let shamsiDate = dateToShamsi(miladi_y,miladi_m,miladi_d)
+renderCalendar(shamsiDate[0],shamsiDate[1],shamsiDate[2])
 
-for (let i=0; i < mM; ++i){
-    miladi_day_no += miladi_month_days[i]
+function dateToShamsi(miladi_y,miladi_m,miladi_d){
+
+    let mY = miladi_y-1600
+    let mM = miladi_m-1
+    let mD = miladi_d-1
+    let miladi_day_no = 365*mY+div(mY+3,4)-div(mY+99,100)+div(mY+399,400);
+
+    for (let i=0; i < mM; ++i){
+        miladi_day_no += miladi_month_days[i]
+    }
+
+    if (mM>1 && ((mY%4==0 && mY%100!=0) || ($mY%400==0))){
+        /* leap and after Feb */
+        ++miladi_day_no
+    }
+
+    miladi_day_no += mD
+
+    let shamsi_day_no = miladi_day_no-79
+    let shamsi_np = div(shamsi_day_no, 12053)
+
+    shamsi_day_no %= 12053
+
+    let sY = 979+33*shamsi_np+4*div(shamsi_day_no,1461)
+
+    shamsi_day_no %= 1461;
+    if (shamsi_day_no >= 366) {
+        sY += div(shamsi_day_no-1, 365);
+        shamsi_day_no = (shamsi_day_no-1)%365;
+    }
+
+    let day = 0;
+    for (let i = 0; i < 11 && shamsi_day_no >= shamsi_month_days[i]; ++i) {
+        shamsi_day_no -= shamsi_month_days[i];
+        day = i+1 
+    }
+    let sM = day + 1
+    selectedMonth = sM
+    selectedYear = sY
+    currentSMonth = sM
+    
+    let sD = shamsi_day_no+1
+    currentSDay = sD
+    return [sY,sM,sD]
 }
+function renderCalendar(sY,sM,sD){
+    if(sM == currentSMonth || sM == 0){
+        isCurrentMoth = true
+    }
+    shamsiDateSpan.textContent=sY+' '+shamsi_months[sM-1]
+    let sMiladiArray = dateToMiladi(sY,sM,1)
+    let eMiladiArray = dateToMiladi(sY,sM,shamsi_month_days[sM-1])
+    miladiDateSpan.textContent= miladi_months[sMiladiArray[1]-1]+'-'+miladi_months[eMiladiArray[1]-1]+ ' '+sMiladiArray[0]
 
-if (mM>1 && ((mY%4==0 && mY%100!=0) || ($mY%400==0))){
-    /* leap and after Feb */
-    ++miladi_day_no
-}
+    //finding the first day of shamsi of the current month
+    //0:sun ... 6: sat
+    let sWeekDay = new Date(sMiladiArray[0],sMiladiArray[1]-1,sMiladiArray[2]).getDay()
+    let eWeekDay = new Date(eMiladiArray[0],eMiladiArray[1]-1,eMiladiArray[2]).getDay()
+    if(sWeekDay != 6){
+        for(let j = 0;j<=sWeekDay;j++){
+            let squar = document.createElement('span')
+            squar.classList.add('day')
+            daysDiv.appendChild(squar)
+        }
+    }
 
-miladi_day_no += mD
+    for(let i = 1; i <= shamsi_month_days[sM-1]; i++){
+        let squar = document.createElement('span')
+        squar.classList.add('day')
+        if(i==currentSDay && isCurrentMoth){
+            squar.classList.add('current-day')
+        }
+        squar.textContent=i
+        daysDiv.appendChild(squar)
 
-let shamsi_day_no = miladi_day_no-79
-let shamsi_np = div(shamsi_day_no, 12053)
-
-shamsi_day_no %= 12053
-
-let sY = 979+33*shamsi_np+4*div(shamsi_day_no,1461)
-
-shamsi_day_no %= 1461;
-if (shamsi_day_no >= 366) {
-    sY += div(shamsi_day_no-1, 365);
-    shamsi_day_no = (shamsi_day_no-1)%365;
-}
-
-let day = 0;
-for (let i = 0; i < 11 && shamsi_day_no >= shamsi_month_days[i]; ++i) {
-    shamsi_day_no -= shamsi_month_days[i];
-    day = i+1 
-}
-let sM = day + 1
-let sD = shamsi_day_no+1
-
-shamsiDateSpan.textContent=sY+' '+shamsi_months[sM-1]
-let sMiladiArray = dateToMiladi(sY,sM,1)
-let eMiladiArray = dateToMiladi(sY,sM,shamsi_month_days[sM-1])
-miladiDateSpan.textContent= miladi_months[sMiladiArray[1]-1]+'-'+miladi_months[eMiladiArray[1]-1]+ ' '+sMiladiArray[0]
-
-//finding the first day of shamsi of the current month
-//0:sun ... 6: sat
-let sWeekDay = new Date(sMiladiArray[0],sMiladiArray[1]-1,sMiladiArray[2]).getDay()
-let eWeekDay = new Date(eMiladiArray[0],eMiladiArray[1]-1,eMiladiArray[2]).getDay()
-if(sWeekDay != 6){
-    for(let j = 0;j<=sWeekDay;j++){
+    }
+    if(eWeekDay != 6){
+        for(let j = eWeekDay;j<5;j++){
+            let squar = document.createElement('span')
+            squar.classList.add('day')
+            daysDiv.appendChild(squar)
+        }
+    }else{
         let squar = document.createElement('span')
         squar.classList.add('day')
         daysDiv.appendChild(squar)
     }
 }
-
-for(let i = 1; i <= shamsi_month_days[sM-1]; i++){
-    let squar = document.createElement('span')
-    squar.classList.add('day')
-    if(i==sD){
-        squar.classList.add('current-day')
-    }
-    squar.textContent=i
-    daysDiv.appendChild(squar)
-
-}
-if(eWeekDay != 6){
-    for(let j = eWeekDay;j<5;j++){
-        let squar = document.createElement('span')
-        squar.classList.add('day')
-        daysDiv.appendChild(squar)
-    }
-}else{
-    let squar = document.createElement('span')
-    squar.classList.add('day')
-    daysDiv.appendChild(squar)
-}
-
 
 function dateToMiladi(y,m,d){
     let shY = y-979
@@ -154,5 +176,34 @@ function div(a, b) {
     return Math.floor(a / b);
  }
  function loadNextMonth(){
-     alert('herer')
+    shamsiDateSpan.innerHTML=''
+    miladiDateSpan.innerHTML=''
+    daysDiv.innerHTML=''
+    isCurrentMoth = false
+
+    if(selectedMonth == 12){
+        selectedMonth = 1
+        selectedYear = selectedYear+1
+    }
+    else{
+        selectedMonth = selectedMonth+1
+    }
+    
+    renderCalendar(selectedYear,selectedMonth,1)
+ }
+ function loadPreviousMonth(){
+    shamsiDateSpan.innerHTML=''
+    miladiDateSpan.innerHTML=''
+    daysDiv.innerHTML=''
+    isCurrentMoth = false
+
+    if(selectedMonth == 1){
+        selectedMonth = 12
+        selectedYear = selectedYear-1
+    }
+    else{
+        selectedMonth = selectedMonth-1
+    }
+    
+    renderCalendar(selectedYear,selectedMonth,1)
  }

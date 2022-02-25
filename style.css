@@ -47,6 +47,7 @@ section{
 }
 .current-day{
     border: 2px solid #69c2ea;
+    border-radius: 5px;
 }
 section div{
     margin: 1em;
@@ -63,7 +64,7 @@ header{
     
     transform: translateY(-50%);
     margin: 0 auto;
-    top: 5%;
+    top: 7.5%;
 }
 .actions button {
     border-radius: 50px;
@@ -73,12 +74,12 @@ header{
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    width: 40px;
-    height: 40px;
+    width: 2em;
+    height: 2em;
 }
-#carousel-button-prev {
-    margin-top: 20px;
+#nextMonth {
+    margin-left: 20px;
 }
-#carousel-button-next {
-    margin-top: 20px;   
+#previousMonth {
+    margin-right: 20px;   
 }
