@@ -1,17 +1,22 @@
 body{
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: B Nazanin,ubuntu, Helvetica, sans-serif;
+    font-size: 1rem;
+    font-weight: 300;
 }
 h1{
     color: #69c2ea;
     margin-bottom: 0;
+    font-size: 2em;
+}
+#shamsiDate{
+    cursor: pointer;
 }
 h2{
+    font-family: ubuntu;
     font-weight: 300;
     margin-top: 0;
 }
-.qamari{
-    margin-top: 0;
-}
+
 .miladi{
     margin-bottom: 0;
 }
@@ -21,6 +26,7 @@ section{
     margin: 0 auto;
     text-align: center;
     box-shadow: 0 1px 6px rgb(0 0 0 / 12%), 0 1px 4px rgb(0 0 0 / 24%);
+    padding: 1em;
 }
 .week-days{
     display: flex;
@@ -32,21 +38,21 @@ section{
     width: 100%;
 }
 #days{
-    
     width: 100%;
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    color: #69c2ea;
 }
 .day{
     
     width: 13%;
     margin: .5em 0;
-    height: 2em;
+    height: auto;
 }
 .current-day{
-    border: 2px solid #69c2ea;
+    border: 2px solid #555;
     border-radius: 5px;
 }
 section div{
@@ -82,4 +88,68 @@ header{
 }
 #previousMonth {
     margin-right: 20px;   
+}
+.shamsi_day{
+    font-size: 1.5em;
+}
+.miladi_day{
+    font-family: ubuntu;
+    color: black;
+    display: block;
+    font-size: 1em;
+}
+#modal{
+    background-color: #fefefe;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 20%;
+}
+#overlay {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+
+select{
+    padding:.5em;
+    
+    width: 30%;
+    font-family: inherit;
+    font-size: inherit;
+    cursor: inherit;
+    line-height: inherit;
+}
+.modalBtn{
+    background: #555;
+    padding: .65em 1em;
+    border-radius: 10%;
+    text-decoration: none;
+    color: #69c2ea;
+}
+@media (max-width:600px){
+    .shamsi_day{
+        font-size: 1em;
+    }
+    .miladi_day{
+        font-size: .75em;
+    }
+    h1{
+        font-size: 1.5em;
+    }
+    h2{
+        font-size: 1em;
+    }
+    .actions button {
+        font-size: .75em;
+        width: 2em;
+        height: 2em;
+    }
 }
