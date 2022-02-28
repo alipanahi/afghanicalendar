@@ -195,7 +195,7 @@ function dateToMiladi(y,m,d){
 function div(a, b) {
     return Math.floor(a / b);
  }
- function loadNextMonth(){
+ function loadNextMonth(){console.log(selectedMonth)
     shamsiDateSpan.innerHTML=''
     miladiDateSpan.innerHTML=''
     daysDiv.innerHTML=''
@@ -255,14 +255,26 @@ function shamsiIsLeap (year)
     return ((year % 4) == 0);
 }
 function LoadModal(){
+    document.getElementById('select_year').textContent=''
+    document.getElementById('select_month').textContent=''
+    
     for(let i=currentSYear-50;i<=currentSYear+1;i++){
         let option = document.createElement('option')
         option.setAttribute('value',i)
-        if(i==currentSYear){
+        if(i==selectedYear){console.log(selectedYear)
             option.setAttribute('selected','selected')
         }
         option.textContent=i
         document.getElementById('select_year').appendChild(option)
+    }
+    for (let i = 0;i<shamsi_months.length;i++){
+        let option = document.createElement('option')
+        option.setAttribute('value',i+1)
+        if(i+1==selectedMonth){
+            option.setAttribute('selected','selected')
+        }
+        option.textContent=shamsi_months[i]
+        document.getElementById('select_month').appendChild(option)
     }
     document.getElementById('overlay').style.display='block'
 }
@@ -281,6 +293,9 @@ function renderModal(){
     miladiDateSpan.innerHTML=''
     daysDiv.innerHTML=''
     isCurrentMoth = false
+    selectedYear = parseInt(modalYear)
+    selectedMonth = parseInt(modalMonth)
+
     document.getElementById('overlay').style.display= "none";
     renderCalendar(modalYear,modalMonth,1)
 }
