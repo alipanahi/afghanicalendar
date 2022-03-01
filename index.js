@@ -8,6 +8,7 @@ const daysDiv = document.getElementById('days')
 const nextBtn = document.getElementById('nextMonth')
 const previousBtn = document.getElementById('previousMonth')
 const modalOpen = document.getElementById('modalBtn')
+const todayBtn = document.getElementById('todayBtn')
 let selectedMonth = 0
 let selectedYear = 0
 let currentSYear = 0
@@ -20,6 +21,7 @@ nextBtn.addEventListener('click',loadNextMonth)
 previousBtn.addEventListener('click',loadPreviousMonth)
 shamsiDateSpan.addEventListener('click',LoadModal)
 modalOpen.addEventListener('click',renderModal)
+todayBtn.addEventListener('click',renderToday)
 //according to today's date, render the current month
 let unixdate = Date.now()
 let today = new Date(unixdate)
@@ -31,7 +33,16 @@ let miladi_y = todayArray[2]
 
 let shamsiDate = dateToShamsi(miladi_y,miladi_m,miladi_d)
 renderCalendar(shamsiDate[0],shamsiDate[1],shamsiDate[2])
+function renderToday(){
+    shamsiDateSpan.innerHTML=''
+    miladiDateSpan.innerHTML=''
+    daysDiv.innerHTML=''
+    isCurrentMoth = false
+    selectedYear = shamsiDate[0]
+    selectedMonth = shamsiDate[1]
 
+    renderCalendar(shamsiDate[0],shamsiDate[1],shamsiDate[2])
+}
 function dateToShamsi(miladi_y,miladi_m,miladi_d){
 
     let mY = miladi_y-1600
@@ -43,7 +54,7 @@ function dateToShamsi(miladi_y,miladi_m,miladi_d){
         miladi_day_no += miladi_month_days[i]
     }
 
-    if (mM>1 && ((mY%4==0 && mY%100!=0) || ($mY%400==0))){
+    if (mM>1 && ((mY%4==0 && mY%100!=0) || (mY%400==0))){
         /* leap and after Feb */
         ++miladi_day_no
     }
@@ -195,7 +206,7 @@ function dateToMiladi(y,m,d){
 function div(a, b) {
     return Math.floor(a / b);
  }
- function loadNextMonth(){console.log(selectedMonth)
+ function loadNextMonth(){
     shamsiDateSpan.innerHTML=''
     miladiDateSpan.innerHTML=''
     daysDiv.innerHTML=''
@@ -261,7 +272,7 @@ function LoadModal(){
     for(let i=currentSYear-50;i<=currentSYear+1;i++){
         let option = document.createElement('option')
         option.setAttribute('value',i)
-        if(i==selectedYear){console.log(selectedYear)
+        if(i==selectedYear){
             option.setAttribute('selected','selected')
         }
         option.textContent=i
@@ -299,3 +310,4 @@ function renderModal(){
     document.getElementById('overlay').style.display= "none";
     renderCalendar(modalYear,modalMonth,1)
 }
+
