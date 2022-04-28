@@ -12,18 +12,8 @@ nothing to install as it uses only javascript
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
+* [javascript](https://www.javascript.com/)
+* 
 ## Authors
 
-* **Ali Hussain Panahi** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+* **Ali Hussain Panahi**
